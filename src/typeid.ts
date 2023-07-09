@@ -18,6 +18,10 @@ function isValidPrefix(str: string): boolean {
   return true;
 };
 
+export interface TypeIDTyped<T extends string> extends TypeID {
+  getType(): T;
+}
+
 export class TypeID {
   constructor(private prefix: string = "", private suffix: string = "") {
     if (!isValidPrefix(prefix)) {
@@ -67,6 +71,14 @@ export class TypeID {
       return this.suffix;
     }
     return `${this.prefix}_${this.suffix}`;
+  }
+
+  public asType<T extends string>(prefix: T): TypeIDTyped<T> {
+    const generic = {} as TypeIDTyped<string>;
+    if (generic.prefix !== prefix) {
+      throw new Error("Prefix mismatch");
+    }
+    return generic as TypeIDTyped<T>;
   }
 
   static fromString(str: string): TypeID {

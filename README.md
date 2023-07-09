@@ -53,6 +53,15 @@ import { TypeID } from 'typeid-js';
 const tid = TypeID.fromString("prefix_00041061050r3gg28a1c60t3gf");
 ```
 
+The `TypeID` class also supports type checking with generics:
+```typescript
+import { typeid } from 'typeid-js';
+
+const prefix = 'prefix' as const;
+const tid = typeid(prefix); // TypeID
+const typed = tid.asType(prefix); // TypeIDTyped<'prefix'>
+```
+
 To encode an existing UUID as a TypeID:
 ```typescript
 import { TypeID } from 'typeid-js';
@@ -66,6 +75,7 @@ The full list of methods includes:
 + `toString()`: Encodes the object as a string, using the canonical format
 + `toUUID()`: Decodes the TypeID into a UUID string in hex format. The type prefix is ignored
 + `toUUIDBytes()`: Decodes the TypeID into a UUID byte array. The type prefix is ignored
++ `asType(prefix)`: Returns a TypeID with prefix type safety
 + `fromString(str)`: Parses a TypeID from a string
 + `fromUUID(prefix, uuid)`: Creates a TypeID from a prefix and a UUID in hex format
 + `fromUUIDBytes(prefix, bytes)`: Creates a TypeID from a prefix and a UUID in byte array format
